@@ -4,7 +4,15 @@
     <meta charset="utf-8" />
 
     <title>Facets Daily</title>
-    <meta http-equiv="refresh" content="0; URL=https://facets.bigtentgames.com/?daily" />
+    <script>
+      // ?d=YYYY-MM-DD carries a specific date through to the app's ?daily param - only ever set when
+      // someone re-shares an EARLIER daily (see HandleShareDailyResult in the facets repo). No value
+      // means today, the common case, unchanged from before.
+      var d = new URLSearchParams(location.search).get("d");
+      var origin = location.hostname.endsWith(".local") ? "https://facets.bigtentgames.local/" : "https://facets.bigtentgames.com/";
+      location.replace(origin + (d ? "?daily=" + encodeURIComponent(d) : "?daily"));
+    </script>
+    <noscript><meta http-equiv="refresh" content="0; URL=https://facets.bigtentgames.com/?daily" /></noscript>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="rgb(0, 9, 15)" />
 

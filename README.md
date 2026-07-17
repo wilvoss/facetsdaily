@@ -10,8 +10,20 @@ Destination: `https://facets.bigtentgames.com/?daily`
 ## Why it is a page and not a redirect rule
 
 A Cloudflare redirect rule can't carry OG tags. A page can, so this clones the pattern that
-`facets/open/index.html` already proved: OG/twitter tags plus a zero-delay
-`<meta http-equiv="refresh">`, empty body.
+`facets/open/index.html` already proved: OG/twitter tags plus a zero-delay redirect, empty
+body.
+
+## Why the redirect is a script, not a static meta refresh
+
+The destination depends on where the stub itself is being loaded from, so it can't be a
+single hardcoded `<meta http-equiv="refresh">`: production (`facetsdaily.com`) needs to land
+on `https://facets.bigtentgames.com/?daily`, but a local test (`facetsdaily.local`) needs to
+land on the local dev app, `https://facets.bigtentgames.local/?daily` — hardcoding the prod
+URL would always bounce local testing out to the live site. A tiny inline script picks the
+target by `location.hostname`. **The static meta refresh survives inside a `<noscript>`,
+hardcoded to production**, as the fallback for non-JS clients — OG scrapers (Discord,
+Facebook, etc.) only ever read the `<head>` meta tags and don't execute the redirect either
+way, so this doesn't touch the OG card.
 
 ## Why it is its own repo
 
@@ -97,6 +109,15 @@ Worth doing on the merits, not just price: Cloudflare Registrar sells at cost wi
 markup, and **WHOIS privacy is included free** rather than being a paid upsell. Public WHOIS
 on a NetSol default means a name and address in a scrapeable database. This is the same
 principle that produced the platform's own auth.
+
+## Local testing
+
+`facetsdaily.local` resolves via the existing wildcard Apache vhost
+(`ServerAlias *.local` → `VirtualDocumentRoot "/Users/wilvoss/Sites/%1"` in
+`/etc/apache2/extra/httpd-vhosts.conf`) and the shared cert, which already lists `*.local` in
+its SAN — so no per-site vhost block or new cert was needed, only the `/etc/hosts` line
+(`127.0.0.1 facetsdaily.local`). Visiting it locally redirects to
+`https://facets.bigtentgames.local/?daily` instead of production, per the script above.
 
 ## Files
 
