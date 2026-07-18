@@ -1,0 +1,36 @@
+<!doctype html>
+<html itemtype="https://schema.org/VideoGame" lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Facets Daily</title>
+    <script>
+      // ?d=YYYY-MM-DD carries a specific date through to the app's ?daily param - only ever set when
+      // someone re-shares an EARLIER daily (see HandleShareDailyResult in the facets repo). No value
+      // means today, the common case, unchanged from before.
+      var d = new URLSearchParams(location.search).get("d");
+      var origin = location.hostname.endsWith(".local") ? "https://facets.bigtentgames.local/" : "https://facets.bigtentgames.com/";
+      location.replace(origin + (d ? "?daily=" + encodeURIComponent(d) : "?daily"));
+    </script>
+    <noscript><meta http-equiv="refresh" content="0; URL=https://facets.bigtentgames.com/?daily" /></noscript>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="rgb(0, 9, 15)" />
+
+    <meta name="keywords" content="facets daily, free online game, brain teaser, casual game, puzzle game, word game, word association, puzzle, social game" />
+    <meta name="description" content="Facets Daily: a new word association puzzle every day." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:title" content="Facets Daily" />
+    <meta property="og:site_name" content="facetsdaily.com/open" />
+    <meta property="og:author" content="Wil Voss" />
+    <meta property="og:description" content="A new word association puzzle every day." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://facetsdaily.com/" />
+    <meta property="og:image" content="https://facetsdaily.com/images/facets_og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+
+  <body></body>
+</html>
